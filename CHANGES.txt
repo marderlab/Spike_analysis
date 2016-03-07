@@ -1,0 +1,153 @@
+1.3.9
+  Removed random crap file ibis.mat
+  Added option 'discountNegativeDeriv' to GetSpikes.m, which defaults to false
+    normally but true when 'findMinis' is true. It decreases the strictness
+    of required negative derivatives to detect a mini (which have slow
+    repolarization).
+  Corrected legend in PlotGetSpikes.m
+  Added legend to dV/dt plot in GetSpikes.m
+  Updated help documentation
+
+1.3.8
+  GetSpikes.m:
+    Use DerivFilter instead of WienerDeriv
+    Added options 'minSpikeHeight', 'minSpikeAspect'
+    Changed spike search so that a negative derivative must quickly follow the
+      maximum positive derivative
+    Added .height, .width to output structure
+  TestWaveform:
+    better 1-1 matching between test and saved spike data
+
+1.3.7
+  AnalyzeWaveform.m:
+    Changed how options were passed to GetSpikes
+    Updated default options
+  GetOptions.m:
+    Improved guessing key-value pair vs list of options (still not perfect)
+  TestWaveform:
+    Quantitative system almost complete:
+      need to get Lamont directory in the system
+      Still must develop F-I specific and AnalyzeWaveform specific tests
+
+1.3.6
+  GetSpikes.m:
+    Added findMinis option
+  GetOptions.m:
+    Added optional output argument "modified", which lists whether or not each
+      option has been modified from default
+  TestWaveform.m:
+    Building quantitative testing system
+      Maria and Jon directories are handled
+      Tilman and Lamont) still must be transistioned
+      Still must develop F-I specific and AnalyzeWaveform specific tests
+
+1.3.5
+  GetSpikes.m:
+    Made filtering more aggressive
+    Removed plot of curvature
+    Tied output of some information to debugPlots
+  TestWaveform.m:
+    Preliminary work to make testing more quantitative, less graph-based
+
+1.3.4
+  LoadAbf:
+    Fixed error condition parsing header information from some .abf files
+
+1.3.3
+  GetFICurve:
+    If IIntercept is too large, produce error instead of warning, and move
+      notification to fitCurve() instead of plotFI()
+
+1.3.2
+  Removed GetFICurveOld.m
+
+1.3.1
+  GetFICurve:
+    updated help
+    Bugfix: fI.fitInfo was computed incorrectly in some situations
+    Improved smoothness of graph from plotFI
+
+1.3.0
+  GetFICurve:
+    Bugfix: previously reported spike rates in kHz instead of Hz
+    Organized output into struct
+    Curve fit to f-I curve is now a function of f, not I
+    Better estimates of standard error of mean f, I
+  GetOptions:
+    ignoreExtra -> allowExtra (cause extra options to be set, rather than
+      completely ignored)
+  TestWaveform:
+    adjust determination of path so that users other than ted can run tests!
+
+1.2.2
+  Bugfix: GetFICurve had some string processing errors
+  Updated TestWaveForm('Maria') to call GetFICurve
+
+1.2.1
+  Vastly improved/modernized GetFICurve.m
+
+1.2.0
+  In GetSpikes.m
+    Added option 'removeOutliers'
+    Corrected undesirable behavior in how spikes were bracketed
+    Improved filtering strength for very noisy data
+    Moved measurement of "typical" derivative noise to consider data within
+      +- 1/2 sigma of median
+    Altered computation of pFalseSpike to reflect that filtering decreases the
+      odds that a large positive will be followed by a large negative
+
+1.1.0
+  Slight speed up to GetSpikes.m main detection loop
+  Added option 'recursive' to GetSpikes.m
+  For very noisy data, derivative smoothing increases
+  Spike height must be at least 10 * digitization noise
+  In test suite:
+    Some simplification of test
+    Ability to specify which tests are performed by passing name
+    Some decrease in data size
+    Removal of inappropriate data
+
+1.0.6
+  bugfix: in GetSpikes.m::getSpikeShape, sometimes maxDeriv or minDeriv could
+    be found on the wrong side of the spike peak.
+
+1.0.5
+  bugfix: AnalyzeSlowWave.m::RemoveSpikes crashed when there were no spikes
+
+1.0.4
+  Partially cleaned up AnalyzeSlowWave.m
+  Updated AnalyzeExtracellular.m
+  Messing about with test functions
+
+1.0.3
+  increased resilience of GetSpikes.m::getSpikeShape in the face of very noisy
+    data
+  in Spectrum.m:
+    included standard GetOptions interface with new options
+    simplified to one method (spec = fft(correlation(0.25:0.75)))
+    de-trend instead of de-mean
+
+1.0.2
+  in GetSpikes.m:
+    updated plotting
+      added some debugging plots
+    updated method of setting spike thresholds
+      chosen to match estimated probability of finding spurious spikes
+    added some extra start-up options
+      only plot debug plots when options.debugPlots is true
+      can set pFalseSpike
+  in WienerDeriv.m:  (improved quality of derivatives for noisy traces)
+    Detrend input signal instead of just subtracting mean
+    Changed method of estimating noise
+      -remove frequencies above 1/4 Nyquist instead of 1/2
+      -set noise level at 90th percentile instead of max
+    Allow requesting multiple derivative orders
+  in PlotGetSpikes.m:
+    Don't draw vertical red lines when shape information is present
+    Plot curvature information instead of minV
+    Add legend
+    return plot handle if requested
+
+1.0.1
+  GetSpikes.m times in spike object were off by equivalent of one index
+  Changed computation of preMaxCurve and postMaxCurve to be more reliable
